@@ -1,34 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const { v4: uuidv4 } = require('uuid');
+const {getUsers, getAUser, createUser, deleteUser, updateUser} = require('../controllers/user');
 
-let users = [];
+router.get('/', getUsers);
 
-router.get('/', (req, res) => {res.json(users)});
+router.post('/', createUser);
 
-router.post('/', (req, res) => {
-    const user = req.body;
-    const newUserId = {...user, id:uuidv4()}
+router.get('/:id', getAUser);
 
-    users.push(newUserId);
-    console.log(users);
-    res.json(newUserId);
-});
+router.delete('/:id', deleteUser);
 
-router.get('/:id', (req, res) => {
-    
-    const userId = req.params.id;
+router.put('/:id', updateUser);
 
-    const foundUser = users.find((user) => user.id === userId);
-  
-    res.send(foundUser);
-
-});
-
-router.delete('/:id', (req, res) => {
-    const userId = req.params.id;
-
-    users = users.filter((user) => {user.id !== userId});
-    res.send(users);
-});
 module.exports = router;
